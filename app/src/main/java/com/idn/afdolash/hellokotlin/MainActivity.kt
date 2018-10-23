@@ -11,6 +11,7 @@ import org.jetbrains.anko.recyclerview.v7.recyclerView
 class MainActivity : AppCompatActivity() {
 
     private var items: MutableList<Club> = mutableListOf()
+    lateinit var rcClub: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,17 +20,18 @@ class MainActivity : AppCompatActivity() {
 
         verticalLayout {
             lparams(width = matchParent, height = matchParent)
-            recyclerView {
+            rcClub = recyclerView {
                 clipToPadding = false
-                layoutManager = LinearLayoutManager(this@MainActivity)
-                adapter = ClubAdapter(this@MainActivity, items) {
-                    val intent = Intent(this@MainActivity, DetailClub::class.java)
-                    intent.putExtra("name", it.name)
-                    intent.putExtra("image", it.image)
-                    intent.putExtra("description", it.description)
-                    startActivity(intent)
-                }
             }.lparams(width = matchParent)
+        }
+
+        rcClub.layoutManager = LinearLayoutManager(this)
+        rcClub.adapter = ClubAdapter(this, items) {
+            val intent = Intent(this, DetailClub::class.java)
+            intent.putExtra("name", it.name)
+            intent.putExtra("image", it.image)
+            intent.putExtra("description", it.description)
+            startActivity(intent)
         }
     }
 
